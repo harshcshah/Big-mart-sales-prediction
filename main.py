@@ -1,5 +1,5 @@
 import streamlit as st
-import joblib
+import pickle
 import numpy as np
 import datetime as dt
 
@@ -38,8 +38,10 @@ if st.button("Predict"):
 
     p5 = current_year - establishment_year
 
-    # Load the pre-trained model
-    model = joblib.load('bigmart_model')
+    # Load the pre-trained model using pickle
+    with open('bigmart_model.pkl', 'rb') as model_file:
+        model = pickle.load(model_file)
+
     result = model.predict(np.array([[item_mrp, p2, p3, p4, p5]]))
 
     # Display the prediction
