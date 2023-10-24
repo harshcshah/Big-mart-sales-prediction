@@ -27,5 +27,5 @@ if st.button("Predict"):
     result = model.predict(np.array([[p1, p2, p3, p4, p5]])
 
     # Display the prediction
-    st.write("Predicted Sales: {}".format(result[0]))
-    st.write("Sales Value is between {} and {}".format(result[0]-714.42, result[0]+714.42))
+    st.write("Predicted Sales: " + str(result[0]))
+    st.write("Sales Value is between " + str(result[0]-714.42) + " and " + str(result[0]+714.42))
