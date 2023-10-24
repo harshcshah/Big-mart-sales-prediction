@@ -24,7 +24,7 @@ if st.button("Predict"):
     # Load the pre-trained model using joblib
     model = joblib.load('bigmart_model.pkl')
 
-    result = model.predict(np.array([[p1, p2, p3, p4, p5]])
+    result = model.predict(np.array([[p1, p2, p3, p4, p5]))
 
     # Display the prediction
     st.write("Predicted Sales: " + str(result[0]))
