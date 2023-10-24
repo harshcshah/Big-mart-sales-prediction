@@ -15,9 +15,27 @@ outlet_type = st.selectbox("Outlet Type", ["Grocery Store", "Supermarket Type1",
 establishment_year = st.number_input("Outlet Establishment Year")
 
 if st.button("Predict"):
-    p2 =  # Map outlet_identifier to a numerical value
-    p3 =  # Map outlet_size to a numerical value
-    p4 =  # Map outlet_type to a numerical value
+    # Map outlet_identifier to a numerical value
+    if outlet_identifier == "OUT010":
+        p2 = 0
+    elif outlet_identifier == "OUT013":
+        p2 = 1
+    # Add similar mappings for other options
+
+    # Map outlet_size to a numerical value
+    if outlet_size == "High":
+        p3 = 0
+    elif outlet_size == "Medium":
+        p3 = 1
+    # Add similar mappings for other options
+
+    # Map outlet_type to a numerical value
+    if outlet_type == "Grocery Store":
+        p4 = 0
+    elif outlet_type == "Supermarket Type1":
+        p4 = 1
+    # Add similar mappings for other options
+
     p5 = current_year - establishment_year
 
     # Load the pre-trained model
