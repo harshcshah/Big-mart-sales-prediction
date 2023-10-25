@@ -1,40 +1,42 @@
 import streamlit as st
+import joblib
 import numpy as np
 import datetime as dt
 
-# Function to make sales prediction
+# Function to make sales predictions
 def make_sales_prediction():
-    p1 = st.text_input("Item_MRP", type="float", value=0.0)
-    p5 = st.text_input("Outlet_Establishment_Year", type="int", value=2000)
+    st.header("Big Mart Sales Prediction using Machine Learning")
 
+    # Input fields
+    item_mrp = st.number_input("Item MRP", value=0.0)
     outlet_identifier = st.selectbox("Outlet Identifier", ['OUT010', 'OUT013', 'OUT017', 'OUT018', 'OUT019', 'OUT027', 'OUT035', 'OUT045', 'OUT046', 'OUT049'])
     outlet_size = st.selectbox("Outlet Size", ['High', 'Medium', 'Small'])
     outlet_type = st.selectbox("Outlet Type", ['Grocery Store', 'Supermarket Type1', 'Supermarket Type2', 'Supermarket Type3'])
+    outlet_establishment_year = st.number_input("Outlet Establishment Year", value=2000)
 
-    p2 = options.index(outlet_identifier)
-    p3 = options0.index(outlet_size)
-    p4 = options1.index(outlet_type)
+    # Map outlet identifier, size, and type to numerical values
+    outlet_identifier_mapping = {'OUT010': 0, 'OUT013': 1, 'OUT017': 2, 'OUT018': 3, 'OUT019': 4, 'OUT027': 5, 'OUT035': 6, 'OUT045': 7, 'OUT046': 8, 'OUT049': 9}
+    outlet_size_mapping = {'High': 0, 'Medium': 1, 'Small': 2}
+    outlet_type_mapping = {'Grocery Store': 0, 'Supermarket Type1': 1, 'Supermarket Type2': 2, 'Supermarket Type3': 3}
 
-    if st.button('Predict'):
-        try:
-            p1 = float(p1)
-            p5 = int(p5)
-            model_input = np.array([[p1, p2, p3, p4, p5]])
-            result = model.predict(model_input)[0]
-            st.write("Sales amount:", result)
-        except (ValueError, IndexError):
-            st.error("Please enter valid values for prediction.")
+    outlet_identifier_encoded = outlet_identifier_mapping.get(outlet_identifier, 0)
+    outlet_size_encoded = outlet_size_mapping.get(outlet_size, 1)
+    outlet_type_encoded = outlet_type_mapping.get(outlet_type, 1)
 
-# Your code for loading the model and making predictions
-# Make sure your 'model' variable is defined here.
+    # Calculate the outlet age
+    current_year = dt.datetime.today().year
+    outlet_age = current_year - outlet_establishment_year
 
-# Your model loading code
-model = joblib.load('bigmart_model')
+    # Predict sales using the loaded model
+    model_input = np.array([[item_mrp, outlet_identifier_encoded, outlet_size_encoded, outlet_type_encoded, outlet_age]])
+    prediction = model.predict(model_input)[0]
 
-current_year = dt.datetime.today().year
-options = ['OUT010', 'OUT013', 'OUT017', 'OUT018', 'OUT019', 'OUT027', 'OUT035', 'OUT045', 'OUT046', 'OUT049']
-options0 = ['High', 'Medium', 'Small']
-options1 = ['Grocery Store', 'Supermarket Type1', 'Supermarket Type2', 'Supermarket Type3']
+    st.subheader("Sales Prediction")
+    st.write(f"Predicted Sales Amount: {prediction:.2f}")
 
-st.title("Big Mart Sales Prediction using Machine Learning")
-make_sales_prediction()
+# Load the model from the .pkl file
+model = joblib.load('models/bigmart_model.pkl')
+
+# Create the Streamlit app
+if __name__ == '__main__':
+    make_sales_prediction()
