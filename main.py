@@ -3,6 +3,9 @@ import joblib
 import numpy as np
 import datetime as dt
 
+# Load the model from the .pkl file
+model = joblib.load('bigmart_model.pkl')
+
 # Function to make sales predictions
 def make_sales_prediction():
     st.header("Big Mart Sales Prediction using Machine Learning")
@@ -33,9 +36,6 @@ def make_sales_prediction():
 
     st.subheader("Sales Prediction")
     st.write(f"Predicted Sales Amount: {prediction:.2f}")
-
-# Load the model from the .pkl file
-model = joblib.load('models/bigmart_model.pkl')
 
 # Create the Streamlit app
 if __name__ == '__main__':
