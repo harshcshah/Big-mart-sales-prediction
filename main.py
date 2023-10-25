@@ -30,12 +30,23 @@ def make_sales_prediction():
     current_year = dt.datetime.today().year
     outlet_age = current_year - outlet_establishment_year
 
+    # Debugging: Print input values
+    st.write(f"Item MRP: {item_mrp}")
+    st.write(f"Outlet Identifier Encoded: {outlet_identifier_encoded}")
+    st.write(f"Outlet Size Encoded: {outlet_size_encoded}")
+    st.write(f"Outlet Type Encoded: {outlet_type_encoded}")
+    st.write(f"Outlet Age: {outlet_age}")
+
     # Predict sales using the loaded model
     model_input = np.array([[item_mrp, outlet_identifier_encoded, outlet_size_encoded, outlet_type_encoded, outlet_age]])
-    prediction = model.predict(model_input)[0]
 
-    st.subheader("Sales Prediction")
-    st.write(f"Predicted Sales Amount: {prediction:.2f}")
+    try:
+        prediction = model.predict(model_input)[0]
+        st.subheader("Sales Prediction")
+        st.write(f"Predicted Sales Amount: {prediction:.2f}")
+    except Exception as e:
+        st.subheader("Error")
+        st.write(f"An error occurred while making the prediction: {str(e)}")
 
 # Create the Streamlit app
 if __name__ == '__main__':
