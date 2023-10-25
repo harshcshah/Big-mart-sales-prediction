@@ -3,9 +3,6 @@ import joblib
 import numpy as np
 import datetime as dt
 
-# Load the model from the file in the same directory
-model = joblib.load('bigmart_model.pkl')
-
 # Function to make sales predictions
 def make_sales_prediction():
     st.header("Big Mart Sales Prediction using Machine Learning")
@@ -32,6 +29,9 @@ def make_sales_prediction():
 
     # Predict sales using the loaded model
     if st.button("Predict"):
+        # Load the model from the root of your repository
+        model = joblib.load('bigmart_model.pkl')
+        
         model_input = np.array([[item_mrp, outlet_identifier_encoded, outlet_size_encoded, outlet_type_encoded, outlet_age]])
         prediction = model.predict(model_input)[0]
         st.subheader("Sales Prediction")
