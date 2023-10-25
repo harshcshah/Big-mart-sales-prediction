@@ -3,8 +3,8 @@ import joblib
 import numpy as np
 import datetime as dt
 
-# Load the model from the .pkl file
-model = joblib.load('bigmart_model.pkl')
+# Load the model from the URL
+model = joblib.load('https://github.com/harshcshah/Big-mart-sales-prediction/raw/main/bigmart_model.pkl')
 
 # Function to make sales predictions
 def make_sales_prediction():
