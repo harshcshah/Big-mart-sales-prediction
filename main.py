@@ -1,32 +1,37 @@
 import streamlit as st
+import pandas as pd
 import joblib
 import requests
 from io import BytesIO
 
-# Load the model from the GitHub URL
-model_url = "https://github.com/harshcshah/Big-mart-sales-prediction/raw/main/bigmart_model.pkl"
-response = requests.get(model_url)
-model = joblib.load(BytesIO(response.content))
+# Function to load the model from GitHub
+def load_model_from_github():
+    url = 'https://github.com/harshcshah/Big-mart-sales-prediction/raw/main/bigmart_model.pkl'
+    response = requests.get(url)
+    model = joblib.load(BytesIO(response.content))
+    return model
+
+# Load the pre-trained model
+model = load_model_from_github()
 
 # Function to make sales predictions
 def make_sales_prediction(item_mrp, outlet_identifier, outlet_size, outlet_type, outlet_age):
-    # Create a data input for prediction
     model_input = [item_mrp, outlet_identifier, outlet_size, outlet_type, outlet_age]
-    
-    # Make a prediction
     prediction = model.predict([model_input])[0]
-
     return prediction
 
-# Streamlit UI elements
-st.title("Big Mart Sales Prediction using Machine Learning")
+# App title and description
+st.title('Big Mart Sales Prediction using Machine Learning')
+st.write('Enter the following details to predict sales:')
 
-item_mrp = st.number_input("Item MRP", min_value=0.00)
-outlet_identifier = st.text_input("Outlet Identifier")
-outlet_size = st.selectbox("Outlet Size", ["High", "Medium", "Small"])
-outlet_type = st.selectbox("Outlet Type", ["Grocery Store", "Supermarket Type1", "Supermarket Type2", "Supermarket Type3"])
-outlet_age = st.number_input("Outlet Establishment Year")
+# Input fields
+item_mrp = st.number_input('Item MRP', min_value=0.0)
+outlet_identifier = st.text_input('Outlet Identifier')
+outlet_size = st.text_input('Outlet Size')
+outlet_type = st.text_input('Outlet Type')
+outlet_age = st.number_input('Outlet Establishment Year', min_value=0)
 
-if st.button("Predict"):
+# Predict button
+if st.button('Predict'):
     prediction = make_sales_prediction(item_mrp, outlet_identifier, outlet_size, outlet_type, outlet_age)
-    st.write(f"Predicted Sales: {prediction:.2f}")
+    st.write(f'Predicted Sales: {prediction:.2f}')
