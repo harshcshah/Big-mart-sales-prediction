@@ -4,17 +4,8 @@ import joblib
 import numpy as np
 import datetime as dt
 
-# Download the model from the URL and save it as 'bigmart_model.pkl'
-model_url = 'https://github.com/harshcshah/Big-mart-sales-prediction/raw/main/bigmart_model.pkl'
-response = requests.get(model_url)
-with open('bigmart_model.pkl', 'wb') as f:
-    f.write(response.content)
-
 # Load the model from the saved file
 model = joblib.load('bigmart_model.pkl')
-
-# Rest of your Streamlit app code...
-
 
 # Function to make sales predictions
 def make_sales_prediction():
